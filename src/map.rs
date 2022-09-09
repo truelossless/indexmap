@@ -24,6 +24,7 @@ use ::core::hash::{BuildHasher, Hash, Hasher};
 use ::core::ops::{Index, IndexMut, RangeBounds};
 use alloc::boxed::Box;
 use alloc::vec::Vec;
+use hashbrown::TryReserveError;
 
 #[cfg(feature = "std")]
 use std::collections::hash_map::RandomState;
@@ -317,6 +318,13 @@ where
     /// Computes in **O(n)** time.
     pub fn reserve(&mut self, additional: usize) {
         self.core.reserve(additional);
+    }
+
+    /// Try to reserve capacity for `additional` more key-value pairs.
+    ///
+    /// Computes in **O(n)** time.
+    pub fn try_reserve(&mut self, additional: usize) -> Result<(), TryReserveError> {
+        self.core.try_reserve(additional)
     }
 
     /// Shrink the capacity of the map as much as possible.

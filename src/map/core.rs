@@ -10,6 +10,7 @@
 mod raw;
 
 use hashbrown::raw::RawTable;
+use hashbrown::TryReserveError;
 
 use crate::vec::{Drain, Vec};
 use core::cmp;
@@ -194,6 +195,15 @@ impl<K, V> IndexMapCore<K, V> {
     pub(crate) fn reserve(&mut self, additional: usize) {
         self.indices.reserve(additional, get_hash(&self.entries));
         self.reserve_entries();
+    }
+
+    /// Try to reserve capacity for `additional` more key-value pairs.
+    pub(crate) fn try_reserve(&mut self, additional: usize) -> Result<(), TryReserveError> {
+        self.indices
+            .try_reserve(additional, get_hash(&self.entries))?;
+        self.reserve_entries();
+
+        Ok(())
     }
 
     /// Reserve entries capacity to match the indices

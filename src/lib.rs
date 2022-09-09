@@ -108,6 +108,7 @@ mod rustc;
 pub use crate::equivalent::Equivalent;
 pub use crate::map::IndexMap;
 pub use crate::set::IndexSet;
+pub use hashbrown::TryReserveError;
 
 // shared private items
 

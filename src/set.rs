@@ -22,6 +22,7 @@ use core::cmp::Ordering;
 use core::fmt;
 use core::hash::{BuildHasher, Hash};
 use core::ops::{BitAnd, BitOr, BitXor, Index, RangeBounds, Sub};
+use hashbrown::TryReserveError;
 
 use super::{Entries, Equivalent, IndexMap};
 
@@ -264,6 +265,13 @@ where
     /// Computes in **O(n)** time.
     pub fn reserve(&mut self, additional: usize) {
         self.map.reserve(additional);
+    }
+
+    /// Try to reserve capacity for `additional` more values.
+    ///
+    /// Computes in **O(n)** time.
+    pub fn try_reserve(&mut self, additional: usize) -> Result<(), TryReserveError> {
+        self.map.try_reserve(additional)
     }
 
     /// Shrink the capacity of the set as much as possible.
